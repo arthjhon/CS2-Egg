@@ -45,6 +45,7 @@ Este repositório contém um **Egg** personalizado para facilitar a implantaçã
 - [Valve](https://www.valvesoftware.com/) pelo CS2
 - [Pelican Panel](https://github.com/pelican-panel) pela plataforma
 - Comunidade open source de CS2 por manter a chama acesa 🔥
+- [K4ryuu](https://github.com/K4ryuu/CS2-Egg/tree/dev) Pelos scripts e base do nosso Egg.
 
 ## 📄 Licença
 
