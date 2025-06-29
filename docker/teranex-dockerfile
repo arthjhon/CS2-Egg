@@ -1,0 +1,94 @@
+# ------------------------------------------------------------------
+# Dockerfile para Servidor Dedicado (CS2) - Focado em Pterodactyl
+# ------------------------------------------------------------------
+
+# SEÇÃO 1: IMAGEM BASE
+# Define a imagem inicial a partir da qual construiremos a nossa.
+#
+# Em vez de uma imagem genérica como 'debian' ou 'ubuntu', esta usa a 'Steam Runtime 3 "Sniper"'.
+# Esta é a imagem oficial da Valve, projetada para máxima compatibilidade com jogos Steam.
+# Ela já inclui a maioria das bibliotecas e dependências necessárias, evitando muitos problemas comuns.
+FROM        registry.gitlab.steamos.cloud/steamrt/sniper/platform:latest-container-runtime-depot
+
+# ------------------------------------------------------------------
+# SEÇÃO 2: METADADOS DA IMAGEM
+# Define 'labels' (etiquetas) que fornecem informações sobre a imagem.
+# Útil para organização, autoria e para quem for inspecionar a imagem.
+# ------------------------------------------------------------------
+LABEL       author="arthjhon @ TERANEX" \
+            maintainer="k1keraa@hotmail.com" \
+            org.opencontainers.image.description="A imagem da Plataforma SteamRT3 para servidores Pterodactyl CS2 é repleta de recursos, projetada para simplificar o gerenciamento do servidor." \
+            org.opencontainers.image.source="https://github.com/arthjhon/CS2-Egg"
+
+# ------------------------------------------------------------------
+# SEÇÃO 3: PREPARAÇÃO DO SISTEMA OPERACIONAL
+# Comandos executados como usuário 'root' para instalar pacotes e configurar o ambiente base.
+# ------------------------------------------------------------------
+
+# Configura o 'sudo' para permitir que usuários do grupo 'sudo' executem comandos como root sem senha.
+# Isso pode ser usado por scripts específicos para realizar tarefas que exigem privilégios elevados de forma controlada.
+RUN         mkdir -p /etc/sudoers.d && \
+            echo "%sudo ALL=(ALL:ALL) NOPASSWD: ALL" > /etc/sudoers.d/flatdeb && \
+            chmod 0440 /etc/sudoers.d/flatdeb
+
+# Define uma variável de ambiente para que o gerenciador de pacotes (apt) não tente abrir prompts interativos.
+ENV         DEBIAN_FRONTEND=noninteractive
+
+# Atualiza a lista de pacotes e instala utilitários essenciais.
+# - iproute2: Fornece o comando 'ip', usado para descobrir o IP do contêiner.
+# - jq: Ferramenta para processar dados em formato JSON.
+# - unzip: Para descompactar arquivos .zip.
+# - expect: Para automatizar scripts que normalmente seriam interativos.
+# - rsync: Ferramenta eficiente para sincronizar/copiar arquivos.
+# 'apt-get clean' remove o cache baixado para manter a imagem final menor.
+RUN         apt update && \
+            apt install -y iproute2 jq unzip expect rsync && \
+            apt-get clean
+
+# ------------------------------------------------------------------
+# SEÇÃO 4: INJEÇÃO DOS SCRIPTS DE LÓGICA
+# Copia os scripts do seu computador (contexto de build) para dentro da imagem.
+# Este Dockerfile não contém a lógica do servidor; ele apenas prepara o ambiente e copia a lógica para dentro.
+# ------------------------------------------------------------------
+
+# Cria os diretórios onde os scripts ficarão armazenados.
+RUN         mkdir -p /scripts /utils
+
+# Copia os arquivos da sua máquina para dentro da imagem.
+COPY        ./scripts/* /scripts/
+COPY        ./utils/* /utils/
+COPY        ./entrypoint.sh /entrypoint.sh
+
+# ------------------------------------------------------------------
+# SEÇÃO 5: CONFIGURAÇÃO DE PERMISSÕES
+# Garante que os scripts que acabamos de copiar possam ser executados.
+# ------------------------------------------------------------------
+RUN         chmod +x /scripts/*.sh && \
+            chmod +x /utils/*.sh && \
+            chmod +x /entrypoint.sh
+
+# ------------------------------------------------------------------
+# SEÇÃO 6: CONFIGURAÇÃO DE USUÁRIO E SEGURANÇA
+# Uma das melhores práticas de Docker: muda de 'root' para um usuário sem privilégios.
+# ------------------------------------------------------------------
+
+# Muda o contexto para o usuário 'container'.
+# Qualquer comando subsequente no Dockerfile e o próprio contêiner em execução usarão este usuário.
+# Isso aumenta drasticamente a segurança, pois limita o que um processo comprometido pode fazer.
+USER        teranex
+
+# Define variáveis de ambiente para o novo usuário.
+ENV         USER=teranex HOME=/home/teranex
+
+# Define o diretório de trabalho padrão.
+# Quando o contêiner iniciar, ele estará neste diretório.
+WORKDIR     /home/teranex
+
+# ------------------------------------------------------------------
+# SEÇÃO 7: COMANDO DE EXECUÇÃO
+# Define o comando padrão que será executado quando o contêiner for iniciado.
+# ------------------------------------------------------------------
+
+# Entrega o controle para o 'entrypoint.sh', que é o script orquestrador principal.
+# É este script que irá baixar, instalar, atualizar e iniciar o servidor de jogo real.
+CMD         [ "/bin/bash", "/entrypoint.sh" ]
