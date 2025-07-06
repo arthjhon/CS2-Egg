@@ -6,7 +6,7 @@
 ![GitHub](https://img.shields.io/github/license/K4ryuu/Project_Template?style=for-the-badge)
 ![GitHub contributors](https://img.shields.io/github/contributors/K4ryuu/Project_Template?style=for-the-badge)
 ![GitHub all releases](https://img.shields.io/github/downloads/K4ryuu/Project_Template/total?style=for-the-badge)
-![GitHub last commit (branch)](https://img.shields.io/github/last-commit/K4ryuu/Project_Template/dev?style=for-the-badge)
+![GitHub last commit (branch)]([https://img.shields.io/github/last-commit/K4ryuu/Project_Template/dev?style=for-the-badge](https://img.shields.io/github/last-commit/arthjhon/CS2-Egg/dev?style=for-the-badge))
 
 
 # 🥚 CS2 - Pelican Panel Egg
