@@ -49,8 +49,6 @@ Este repositório contém um **Egg** personalizado para facilitar a implantaçã
 - `GAME_MODE`: Modo de jogo (ex: `competitive`)
 - `MAX_PLAYERS`: Número máximo de jogadores
 
-## 📂 Estrutura
-
 ## 📣 Créditos
 
 - [Valve](https://www.valvesoftware.com/) pelo CS2
