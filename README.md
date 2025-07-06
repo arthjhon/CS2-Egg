@@ -1,3 +1,14 @@
+<a name="readme-top"></a>
+
+![GitHub tag (with filter)](https://img.shields.io/github/v/tag/K4ryuu/Project_Template?style=for-the-badge&label=Version)
+![GitHub Repo stars](https://img.shields.io/github/stars/K4ryuu/Project_Template?style=for-the-badge)
+![GitHub issues](https://img.shields.io/github/issues/K4ryuu/Project_Template?style=for-the-badge)
+![GitHub](https://img.shields.io/github/license/K4ryuu/Project_Template?style=for-the-badge)
+![GitHub contributors](https://img.shields.io/github/contributors/K4ryuu/Project_Template?style=for-the-badge)
+![GitHub all releases](https://img.shields.io/github/downloads/K4ryuu/Project_Template/total?style=for-the-badge)
+![GitHub last commit (branch)](https://img.shields.io/github/last-commit/K4ryuu/Project_Template/dev?style=for-the-badge)
+
+
 # 🥚 CS2 - Pelican Panel Egg
 
 Este repositório contém um **Egg** personalizado para facilitar a implantação de servidores **Counter-Strike 2** (CS2) utilizando o **Pelican Panel**.
